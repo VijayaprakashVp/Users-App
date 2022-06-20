@@ -10,7 +10,7 @@ export const Users = () => {
   const { isLoading, error, data } = useQuery("userData", () =>
     axios(`https://62b008c7e460b79df03b7410.mockapi.io/users`),
   );
-  console.log(data);
+  //   console.log(data);
 
   if (isLoading) return <h1>Loading...</h1>;
   if (error) return <h1>error : {error.message}</h1>;

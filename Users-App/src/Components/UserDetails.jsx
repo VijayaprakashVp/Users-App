@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useQuery, useMutation } from "react-query";
 import axios from "axios";
 
@@ -41,6 +41,10 @@ export const UserDetails = () => {
 
   return (
     <div>
+      <Link to={"/"} style={{ marginLeft: "-300px" }}>
+        <button>Back to Home</button>
+      </Link>
+
       {edit ? <h2>Existing User Details</h2> : <h2>Updated User Details</h2>}
 
       <div>
