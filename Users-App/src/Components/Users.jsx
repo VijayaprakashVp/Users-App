@@ -6,7 +6,7 @@ export const Users = () => {
   const [showform, setShowform] = useState(false);
   const [singleUser, setSingleUser] = useState([]);
   const [name, setName] = useState("");
-  const [imageurl, setImageurl] = useState("");
+  const [avatar, setAvatar] = useState("");
   const [refresh, setRefresh] = useState(false);
 
   const { isLoading, error, data } = useQuery("userData", () =>
@@ -16,7 +16,7 @@ export const Users = () => {
 
   const handleEditSubmit = () => {
     // console.log("name:", name);
-    // console.log("imageurl:", imageurl);
+    // console.log("avatar:", avatar);
 
     fetch(
       `https://62b008c7e460b79df03b7410.mockapi.io/users/${singleUser.id}`,
@@ -30,7 +30,7 @@ export const Users = () => {
       method: "POST",
       body: JSON.stringify({
         name,
-        imageurl,
+        avatar,
       }),
       headers: { "Content-Type": "application/json" },
     });
@@ -106,8 +106,8 @@ export const Users = () => {
               type="text"
               placeholder="place enter avatar url"
               name="avatar"
-              onChange={(e) => setImageurl(e.target.value)}
-              value={imageurl}
+              onChange={(e) => setAvatar(e.target.value)}
+              value={avatar}
             />
             <br />
           </form>
