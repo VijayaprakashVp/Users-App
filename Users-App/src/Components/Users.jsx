@@ -1,60 +1,16 @@
 import React, { useState } from "react";
 import { useQuery, useMutation } from "react-query";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export const Users = () => {
-  const [showform, setShowform] = useState(false);
-  const [singleUser, setSingleUser] = useState([]);
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
-  const [refresh, setRefresh] = useState(false);
 
   const { isLoading, error, data } = useQuery("userData", () =>
     axios(`https://62b008c7e460b79df03b7410.mockapi.io/users`),
   );
-  //   console.log("data:", data.data);
-
-  const handleEditSubmit = () => {
-    // console.log("name:", name);
-    // console.log("avatar:", avatar);
-
-    fetch(
-      `https://62b008c7e460b79df03b7410.mockapi.io/users/${singleUser.id}`,
-      {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-      },
-    );
-
-    fetch(`https://62b008c7e460b79df03b7410.mockapi.io/users/`, {
-      method: "POST",
-      body: JSON.stringify({
-        name,
-        avatar,
-      }),
-      headers: { "Content-Type": "application/json" },
-    });
-
-    alert("Yay! Data Modified");
-    setRefresh(true);
-  };
-
-  /////////////////////////////////////////////////
-
-  const handleEdit = (id) => {
-    // console.log("id:", id);
-    fetch(`https://62b008c7e460b79df03b7410.mockapi.io/users/${id}`)
-      .then((res) => res.json())
-      .then((res) => {
-        setSingleUser(res);
-        setShowform(true);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  /////////////////////////////////////////////////
-
-  const { mutate } = useMutation(handleEditSubmit);
+  console.log(data);
 
   if (isLoading) return <h1>Loading...</h1>;
   if (error) return <h1>error : {error.message}</h1>;
@@ -74,49 +30,15 @@ export const Users = () => {
             <td>{e.name}</td>
             <img src={e.avatar} alt="" style={{ width: "50px" }} />
             <td>
-              <button
-                style={{ marginLeft: "50px", cursor: "pointer" }}
-                onClick={(id) => handleEdit(e.id)}
-              >
-                Edit
-              </button>
+              <Link to={`/userdetails/${e.id}`}>
+                <button style={{ marginLeft: "50px", cursor: "pointer" }}>
+                  Edit
+                </button>
+              </Link>
             </td>
           </tr>
         ))}
       </table>
-
-      {showform ? (
-        <div style={{ marginBottom: "100px" }}>
-          <h4>
-            {singleUser.name}'s Data , can{" "}
-            <span style={{ color: "red" }}>Edit</span> here
-          </h4>
-          <form action="">
-            Name :{" "}
-            <input
-              type="text"
-              placeholder={singleUser.name}
-              name="name"
-              onChange={(e) => setName(e.target.value)}
-              value={name}
-            />
-            <br /> <br />
-            Avatar :{" "}
-            <input
-              type="text"
-              placeholder="place enter avatar url"
-              name="avatar"
-              onChange={(e) => setAvatar(e.target.value)}
-              value={avatar}
-            />
-            <br />
-          </form>
-          <br />
-          <button onClick={handleEditSubmit}>Submit</button>
-        </div>
-      ) : (
-        ""
-      )}
     </div>
   );
 };
