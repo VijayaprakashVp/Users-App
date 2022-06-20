@@ -11,6 +11,50 @@ export const Users = () => {
   if (isLoading) return <h1>Loading...</h1>;
   if (error) return <h1>error : {error.message}</h1>;
 
+  const [showform, setShowform] = useState(false);
+  const [singleUser, setSingleUser] = useState([]);
+  const [name, setName] = useState("");
+  const [imageurl, setImageurl] = useState("");
+
+  const handleEditSubmit = () => {
+    console.log("name:", name);
+    console.log("imageurl:", imageurl);
+
+    fetch(
+      `https://62b008c7e460b79df03b7410.mockapi.io/users/${singleUser.id}`,
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+
+    fetch(`https://62b008c7e460b79df03b7410.mockapi.io/users/`, {
+      method: "POST",
+      body: JSON.stringify({
+        name,
+        imageurl,
+      }),
+      headers: { "Content-Type": "application/json" },
+    });
+  };
+
+  /////////////////////////////////////////////////
+
+  const handleEdit = (id) => {
+    // console.log("id:", id);
+    fetch(`https://62b008c7e460b79df03b7410.mockapi.io/users/${id}`)
+      .then((res) => res.json())
+      .then((res) => {
+        setSingleUser(res);
+        setShowform(true);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  /////////////////////////////////////////////////
+
+  const { mutate } = useMutation(handleEditSubmit);
+
   return (
     <div>
       <h1>Users List</h1>
@@ -36,6 +80,39 @@ export const Users = () => {
           </tr>
         ))}
       </table>
+
+      {showform ? (
+        <div style={{ marginBottom: "100px" }}>
+          <h4>
+            {singleUser.name}'s Data , can{" "}
+            <span style={{ color: "red" }}>Edit</span> here
+          </h4>
+          <form action="">
+            Name :{" "}
+            <input
+              type="text"
+              placeholder={singleUser.name}
+              name="name"
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+            />
+            <br /> <br />
+            Avatar :{" "}
+            <input
+              type="text"
+              placeholder="place enter avatar url"
+              name="avatar"
+              onChange={(e) => setImageurl(e.target.value)}
+              value={imageurl}
+            />
+            <br />
+          </form>
+          <br />
+          <button onClick={handleEditSubmit}>Submit</button>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
@@ -43,8 +120,6 @@ export const Users = () => {
 ////////////////////////////////////////////////////////////
 
 // const [data, setData] = useState([]);
-//   const [showform, setShowform] = useState(false);
-//   const [singleUser, setSingleUser] = useState([]);
 //   const [edit, setEdit] = useState({});
 //   var refresh = 0;
 
@@ -55,35 +130,8 @@ export const Users = () => {
 //       .catch((err) => console.log(err));
 //   }, [refresh]);
 
-//   const handleEdit = (id) => {
-//     fetch(`https://62b008c7e460b79df03b7410.mockapi.io/users/${id}`)
-//       .then((res) => res.json())
-//       .then((res) => {
-//         setSingleUser(res);
-//         setShowform(true);
-//       })
-//       .catch((err) => console.log(err));
-//   };
-
 //   const handleChange = (e) => {
 //     setEdit({ ...edit, [e.target.name]: e.target.value });
-//   };
-
-//   const handleEditSubmit = () => {
-//     fetch(
-//       `https://62b008c7e460b79df03b7410.mockapi.io/users/${singleUser.id}`,
-//       {
-//         method: "DELETE",
-//         headers: { "Content-Type": "application/json" },
-//       },
-//     );
-
-//     fetch(`https://62b008c7e460b79df03b7410.mockapi.io/users/`, {
-//       method: "POST",
-//       body: JSON.stringify(edit),
-//       headers: { "Content-Type": "application/json" },
-//     });
-//     refresh++;
 //   };
 
 //   return (
@@ -112,37 +160,6 @@ export const Users = () => {
 //         ))}
 //       </table>
 
-//       {showform ? (
-//         <div style={{ marginBottom: "100px" }}>
-//           <h4>
-//             {singleUser.name}'s Data , can{" "}
-//             <span style={{ color: "red" }}>Edit</span> here
-//           </h4>
-//           <form action="">
-//             Name :{" "}
-//             <input
-//               type="text"
-//               placeholder={singleUser.name}
-//               name="name"
-//               onChange={(e) => handleChange(e)}
-//               value={edit.name}
-//             />
-//             <br /> <br />
-//             Avatar :{" "}
-//             <input
-//               type="text"
-//               placeholder="place enter avatar url"
-//               name="avatar"
-//               onChange={(e) => handleChange(e)}
-//               value={edit.avatar}
-//             />
-//             <br />
-//           </form>
-//           <br />
-//           <button onClick={handleEditSubmit}>Submit</button>
-//         </div>
-//       ) : (
-//         ""
-//       )}
+//
 //     </div>
 //   );
