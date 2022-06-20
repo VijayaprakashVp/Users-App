@@ -29,7 +29,7 @@ export const UserDetails = () => {
       }),
       headers: { "Content-Type": "application/json" },
     });
-    console.log(name, avatar);
+    // console.log(name, avatar);
     alert("Yay! Data Modified");
     setEdit(false);
     setShowform(false);
