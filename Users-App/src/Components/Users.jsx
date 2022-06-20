@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation } from "react-query";
 import axios from "axios";
 
@@ -12,9 +12,6 @@ export const Users = () => {
     axios(`https://62b008c7e460b79df03b7410.mockapi.io/users`),
   );
   //   console.log("data:", data.data);
-
-  if (isLoading) return <h1>Loading...</h1>;
-  if (error) return <h1>error : {error.message}</h1>;
 
   const handleEditSubmit = () => {
     // console.log("name:", name);
@@ -54,6 +51,9 @@ export const Users = () => {
   /////////////////////////////////////////////////
 
   const { mutate } = useMutation(handleEditSubmit);
+
+  if (isLoading) return <h1>Loading...</h1>;
+  if (error) return <h1>error : {error.message}</h1>;
 
   return (
     <div>
