@@ -7,6 +7,7 @@ export const Users = () => {
   const [singleUser, setSingleUser] = useState([]);
   const [name, setName] = useState("");
   const [imageurl, setImageurl] = useState("");
+  const [refresh, setRefresh] = useState(false);
 
   const { isLoading, error, data } = useQuery("userData", () =>
     axios(`https://62b008c7e460b79df03b7410.mockapi.io/users`),
@@ -33,6 +34,9 @@ export const Users = () => {
       }),
       headers: { "Content-Type": "application/json" },
     });
+
+    alert("Yay! Data Modified");
+    setRefresh(true);
   };
 
   /////////////////////////////////////////////////
